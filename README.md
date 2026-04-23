@@ -25,9 +25,17 @@ The generation section runs end to end and saves reconstructions plus free gener
 
 The professor-facing audio files live in `assignment3_assets/audio/`.
 
-Expected raw GitHub base once the repo is published:
+Use this GitHub folder page to browse the audio files:
 
-`https://raw.githubusercontent.com/Shazil10/cs156-audio-code-switching/main/assignment3_assets/audio`
+- `https://github.com/Shazil10/cs156-audio-code-switching/tree/main/assignment3_assets/audio`
+
+Use raw links only for individual files. For example:
+
+- `https://raw.githubusercontent.com/Shazil10/cs156-audio-code-switching/main/assignment3_assets/audio/original_clip_mom.wav`
+
+I also added a small audio index page here:
+
+- `assignment3_assets/audio/README.md`
 
 Important files:
 
