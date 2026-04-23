@@ -1,0 +1,15 @@
+.DS_Store
+.venv/
+.vscode/
+.kiro/
+.mpl_cache/
+__pycache__/
+
+wav_files/
+clips/
+Shazil - Mom/
+Shazil - Bestfriend/
+Shazil - Professional/
+
+assignment3_assets/cache/
+
