@@ -1,61 +1,55 @@
 # CS156 Audio Code-Switching Final Project
 
-This repository contains my CS156 final machine learning project on vocal code-switching across three social contexts: `Mom`, `Bestfriend`, and `Professional`.
+This repository holds my CS156 final machine learning project on vocal code-switching across three social contexts: `Mom`, `Bestfriend`, and `Professional`.
 
-The main report is:
+The project runs in three drafts, one notebook per draft, plus a small audio gallery that the final notebook links into.
 
-- `Pipeline_3rd_draft.ipynb`
-- `Pipeline_3rd_draft.html`
+## Notebooks
 
-The project has two parts:
+- `Pipeline_1st_draft.ipynb` - first draft. Builds the data pipeline (WhatsApp voice notes to 10-second WAV clips), extracts MFCC features, and trains the first two baselines: a softmax regression classifier and a 1D CNN.
+- `Pipeline_2nd_draft.ipynb` - second draft. Adds the 54-dimensional feature vector, a note-level group split so no test message leaks into training, audio augmentation, XGBoost as a third model, unified cross validation across all six training regimes, SHAP attributions, and ROC curves.
+- `Pipeline_3rd_draft.ipynb` - third and final draft. Keeps the full classification pipeline and adds the generative extension on top: a conditional beta-VAE plus latent LSTM, an improved autoencoder plus Transformer prior, and a unit-selection synthesis baseline.
 
-1. A classification pipeline that tests whether my voice alone is enough for a model to identify which social context a clip belongs to.
-2. A generation pipeline that tries to produce short voice-like audio windows from the same archive using a conditional beta-VAE and a latent LSTM prior.
+The final draft is the one I would actually read end to end. The earlier two exist so the progression is visible.
 
-## Main Result
+## Main result
 
-The strongest baseline classifier is the augmented CNN:
+The strongest classifier is the augmented CNN:
 
 - Test accuracy: `90.3%`
 - Macro F1: `0.901`
 
-The generation section runs end to end and saves reconstructions plus free generations. The result is interesting but still limited: when I classify the generated clips with the strongest inherited CNN, all 15 generated samples are predicted as `Mom`, so generated-context accuracy stays at `33.3%`, which is the random baseline for a 3-class problem.
+That settles the first half of the project: my three social contexts are separable from voice alone on a strict note-level split.
 
-## Audio Gallery
+The generative extension in the third draft is intentionally honest about quality. The beta-VAE + LSTM and autoencoder + Transformer branches are the learned neural generation attempts; they produce speech-like energy, but the audio is blurry because fine harmonic detail gets smoothed in the spectrogram and Griffin-Lim reconstruction process. The unit-selection baseline is clearer and sounds more like me, but it is jumpy because it stitches real snippets together.
 
-The professor-facing audio files live in `assignment3_assets/audio/`.
+## Audio gallery
 
-Use this GitHub folder page to browse the audio files:
+The audio files live in `assignment3_assets/audio/`.
+
+You can browse the folder directly on GitHub:
 
 - `https://github.com/Shazil10/cs156-audio-code-switching/tree/main/assignment3_assets/audio`
 
-Use raw links only for individual files. For example:
+Raw links work for direct play or download, for example:
 
 - `https://raw.githubusercontent.com/Shazil10/cs156-audio-code-switching/main/assignment3_assets/audio/original_clip_mom.wav`
 
-I also added a small audio index page here:
+There is also a small index page at `assignment3_assets/audio/README.md` with grouped raw links for the three main comparisons: blurry beta-VAE + LSTM, improved autoencoder + Transformer, and clearer unit-selection synthesis.
 
-- `assignment3_assets/audio/README.md`
+Main files:
 
-Important files:
-
-- `original_clip_mom.wav`
-- `original_clip_bestfriend.wav`
-- `original_clip_professional.wav`
-- `real_window_mom.wav`
-- `real_window_bestfriend.wav`
-- `real_window_professional.wav`
-- `reconstruction_mom.wav`
-- `reconstruction_bestfriend.wav`
-- `reconstruction_professional.wav`
-- `generated_mom_00.wav` through `generated_mom_04.wav`
-- `generated_bestfriend_00.wav` through `generated_bestfriend_04.wav`
-- `generated_professional_00.wav` through `generated_professional_04.wav`
+- `original_clip_{mom,bestfriend,professional}.wav` - 10-second examples used earlier in the notebook for waveform and MFCC plots.
+- `real_window_{mom,bestfriend,professional}.wav` - held-out 2-second reference windows used as the real side of each reconstruction pair.
+- `reconstruction_{mom,bestfriend,professional}.wav` - beta-VAE reconstructions of the held-out windows.
+- `generated_{mom,bestfriend,professional}_00.wav` - beta-VAE + LSTM neural generations used in the final gallery.
+- `ae_transformer_generated_{mom,bestfriend,professional}.wav` - improved neural generations from the deterministic autoencoder plus Transformer prior.
+- `unit_generated_{mom,bestfriend,professional}_00.wav` - unit-selection baseline clips, generated by recombining real snippets.
 
 The manifest file is:
 
 - `assignment3_assets/audio/audio_manifest.csv`
 
-## Repository Notes
+## Repository notes
 
-I intentionally do not include the entire raw and derived working dataset in this repository. The large local folders such as `clips/`, `wav_files/`, and the exported WhatsApp source folders are excluded. Instead, I include the report, the final generated assets, the selected original example clips, and the audio manifest so the results are easy to inspect.
+I deliberately do not commit the full raw archive. The large local folders (`clips/`, `wav_files/`, and the original exported WhatsApp folders) are in `.gitignore`. The committed artifacts are the three notebooks, the selected example clips, the held-out references and reconstructions, the saved generations, the audio manifest, and the saved model weights under `assignment3_assets/models/`.
